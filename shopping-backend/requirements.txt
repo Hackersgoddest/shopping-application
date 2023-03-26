@@ -1,0 +1,6 @@
+psycopg2
+django
+django-cors-headers
+django-rest-knox
+knox
+djangorestframework
