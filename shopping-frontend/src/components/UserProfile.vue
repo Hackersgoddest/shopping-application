@@ -1,6 +1,7 @@
 <script setup>
 import { useUserStore } from '../stores/UserStore';
 import { useRouter } from 'vue-router';
+import { reactive } from 'vue';
 import {
     CartSharp as CartIcon,
     Person as Person,
@@ -13,10 +14,24 @@ import {
 
 const userStore = useUserStore()
 const router = useRouter()
+const userPreference = reactive([ 
+    {name: "General", isActive: true},
+    {name: "Activities", isActive: false},
+    {name: "Announcements", isActive: false},
+    {name: "Settings", isActive: false},
+])
 
 function goToSignUp() {
     router.push(`/`)
     userStore.logout()
+}
+
+function changeActive(name) {
+    for(const item  of userPreference){
+        console.log(item)
+        if(item.name == name) item.isActive = true
+        else item.isActive = false
+    }
 }
 
 </script>
@@ -41,23 +56,23 @@ function goToSignUp() {
         <div class="flex h-screen pt-14">
             <div class="flex flex-col h-screen w-[200px] justify-center py-3 bg-[#f5f5f5]">
                 <div class="flex flex-1 gap-4 flex-col">
-                    <a href="#" class="flex items-end p-2 gap-1 hover:bg-gray-200 hover:font-semibold">
+                    <a href="#" class="flex items-end p-2 gap-1 hover:bg-gray-200 hover:font-semibold" :class="[userPreference[0].isActive? 'bg-gray-300' : '']" @click="changeActive(userPreference[0].name)">
                         <Person class="w-8" />
-                        <p>General</p>
+                        <p>{{ userPreference[0].name}}</p>
                     </a>
-                    <a href="#" class="flex p-2 gap-1 items-end hover:bg-gray-200 hover:font-semibold">
+                    <a href="#" class="flex p-2 gap-1 items-end hover:bg-gray-200 hover:font-semibold" :class="[userPreference[1].isActive? 'bg-gray-300' : '']" @click="changeActive(userPreference[1].name)">
                         <EventIcon class="w-8" />
-                        <p>Activities</p>
+                        <p>{{ userPreference[1].name }}</p>
                     </a>
-                    <a href="#" class="flex p-2 gap-1 items-end hover:bg-gray-200 hover:font-semibold">
+                    <a href="#" class="flex p-2 gap-1 items-end hover:bg-gray-200 hover:font-semibold" :class="[userPreference[2].isActive? 'bg-gray-300' : '']" @click="changeActive(userPreference[2].name)">
                         <NotificationIcon class="w-7" />
-                        <p>Announcements</p>
+                        <p>{{ userPreference[2].name }}</p>
                     </a>
                 </div>
                 <div class="flex flex-col">
-                    <a href="#" class="flex p-3 gap-1 items-end hover:bg-gray-200 hover:font-semibold">
+                    <a href="#" class="flex p-3 gap-1 items-end hover:bg-gray-200 hover:font-semibold" :class="[userPreference[3].isActive? 'bg-gray-300' : '']" @click="changeActive(userPreference[3].name)">
                         <SettingIcon class="w-7" />
-                        <p>Settings</p>
+                        <p>{{ userPreference[3].name }}</p>
                     </a>
                     <a href="#" class="flex p-2 gap-1 items-end hover:bg-gray-200 hover:font-semibold" @click="goToSignUp">
                         <LogoutIcon class="w-8" />

@@ -30,6 +30,7 @@ export const useUserStore = defineStore('UserStore', () => {
       user.username = res.data.user.username;
       user.id = res.data.user.id;
     }).catch((error) => {
+      logout()
       isLogin.value = false
       openLogin.value = true
       localStorage.setItem('token', '')

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import API from "../plugin/api";
 
 
@@ -23,7 +23,7 @@ export const useProductStore = defineStore('ProductStore', () => {
             products.value = response.data
             loadedData.value = true
         }).catch((error) => {
-            console.log('Could not sfetch item from the backend')
+            console.log('Could not fetch data from the database')
         })
     }
 

@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from "vue";
 import { useUserStore } from "../../stores/UserStore";
+import { useRouter } from "vue-router";
 import {
   CartSharp as CartIcon,
   PersonOutline as PersonIcon,
   SearchOutline as SearchIcon,
 } from "@vicons/ionicons5";
-const UserStore = useUserStore();
+const userStore = useUserStore();
+const router = useRouter()
 
 const navigation = ref([
   { name: "Home", href: "#home", current: true },
@@ -14,7 +16,7 @@ const navigation = ref([
   { name: "Categories", href: "#categories", current: false },
   { name: "Services", href: "#service", current: false },
   { name: "Contact", href: "#contact", current: false },
-  { name: [UserStore.isLogin]? "Profile" : "Login"},
+  { name: [userStore.isLogin]? "Profile" : "Login"},
 ]);
 
 let openMenu = ref(false);
@@ -29,7 +31,7 @@ function changeActiveMenu(element) {
     openMenu.value = false;
   });
   if (element == 'Login') {
-    UserStore.openLogin = true;
+    userStore.openLogin = true;
   }
 }
 
@@ -89,14 +91,14 @@ function changeActiveMenu(element) {
               <SearchIcon class="h-4 text-gray-400 hover:text-emerald-300 hover:cursor-pointer" />
             </div>
           </div>
-          <span v-if="!UserStore.isLogin" class="font-semibold py-1 px-4 bg-black rounded-md text-white ml-2 hover:bg-emerald-300 hover:cursor-pointer" @click="UserStore.openLogin = true">login</span>
-          <div v-if="UserStore.isLogin" class="dropdown relative inline-block p-1 ml-2">
-            <a href="#" class="dropdown-btn font-semibold py-2 px-3 bg-emerald-300 rounded-full text-black">{{ UserStore.user.username[0].toUpperCase() }}</a>
+          <span v-if="!userStore.isLogin" class="font-semibold py-1 px-4 bg-black rounded-md text-white ml-2 hover:bg-emerald-300 hover:cursor-pointer" @click="userStore.openLogin = true">login</span>
+          <div v-if="userStore.isLogin" class="dropdown relative inline-block p-1 ml-2">
+            <a href="#" class="dropdown-btn font-semibold py-2 px-3 bg-emerald-300 rounded-full text-black">{{ userStore.user.username[0].toUpperCase() }}</a>
             <div class="dropdown-content absolute z-20 bg-white w-[120px] top-8 left-[-80px] rounded-md shadow-2xl">
-              <a class="hover:bg-gray-500 hover:font-bold hover:text-white rounded-t-md" href="">Profile</a>
+              <a class="hover:bg-gray-500 hover:font-bold hover:text-white rounded-t-md" href="" @click="router.push(`/profile/`)">Profile</a>
               <a class="hover:bg-gray-500 hover:font-bold hover:text-white" href="#">Activity</a>
               <a class="hover:bg-gray-500 hover:font-bold hover:text-white" href="#">Settings</a>
-              <a class="hover:bg-red-500 hover:font-bold hover: hover:text-white rounded-b-md" href="#" @click="UserStore.logout">Logout</a>
+              <a class="hover:bg-red-500 hover:font-bold hover: hover:text-white rounded-b-md" href="#" @click="userStore.logout">Logout</a>
             </div>
 
           </div>

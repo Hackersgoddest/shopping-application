@@ -1,16 +1,9 @@
 <script setup>
 import { useProductStore } from '../stores/ProductStore';
-import { useRoute } from 'vue-router';
-import { ref, onBeforeMount } from 'vue'
+import { ref } from 'vue'
 
 const productStore = useProductStore()
-const categoryName = ref('');
-const route = useRoute();
-const { id } = route.params;
-
-onBeforeMount(() => {
-    categoryName.value = productStore.categoryItem.find(item => item.id == parseInt(id))
-});
+const category_name = ref(localStorage.getItem('category_name'))
 </script>
 
 <template>
@@ -18,11 +11,11 @@ onBeforeMount(() => {
         <div class="flex justify-center w-screen pt-4 mt-6 mb-8 flex-col">
             <div class="text-center">
                 <button class="text-xl font-semibold bg-black text-white p-1 rounded leading-9">
-                    {{ categoryName.category_name }}
+                    {{ category_name }}
                 </button>
             </div>
             <p class="text-2xl font-semibold text-center mt-2">
-                Find the best {{ `${categoryName.category_name.toLowerCase()}` }} that you want
+                Find the best {{ `${category_name.toLowerCase()}` }} that you want
             </p>
         </div>
         <div class="w-screen  py-4 sm:px-0 flex justify-center">

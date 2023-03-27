@@ -13,8 +13,11 @@ const productStore = useProductStore()
 const userStore  = useUserStore()
 
 function loadData(id) {
+  localStorage.setItem('id', id)
+  const category_name = productStore.categoryItem[parseInt(id)-1].category_name
+  localStorage.setItem('category_name', category_name)
   productStore.loadProducts(id)
-  if (userStore.isLogin) router.push(`/products/${id}/`)
+  if (userStore.isLogin) router.push(`/products/${category_name}/`)
   else userStore.openLogin = true
 }
 
