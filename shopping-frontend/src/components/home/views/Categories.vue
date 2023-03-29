@@ -13,6 +13,8 @@ const productStore = useProductStore()
 const userStore  = useUserStore()
 
 function loadData(id) {
+  localStorage.setItem('page_number', 1)
+  localStorage.setItem('pages', 0)
   localStorage.setItem('id', id)
   const category_name = productStore.categoryItem[parseInt(id)-1].category_name
   localStorage.setItem('category_name', category_name)

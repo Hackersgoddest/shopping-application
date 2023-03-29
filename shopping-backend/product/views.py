@@ -1,27 +1,28 @@
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from .models import Product, ProductCategory
 from .serializers import ProductSerializer, ProductCategorySerializer
-from rest_framework.decorators import permission_classes, action
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 
 
-@permission_classes([IsAuthenticated])
-class ProductView(viewsets.ModelViewSet):
-    def list(self, request):
-        queryset = Product.objects.all()
-        serializer = ProductSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = Product.objects.filter(category_id=pk)
-        serializer = ProductSerializer(queryset, many=True)
-        return Response(serializer.data)
+class ProductsPageView(PageNumberPagination):
+    page_size = 4
+    page_size_query_param = 'page_size'
+    max_page_size = 4
 
 
-class ProductCategoryView(viewsets.ModelViewSet):
-    def list(self, request):
-        queryset = ProductCategory.objects.all().order_by('category_id')
-        serializer = ProductCategorySerializer(queryset, many=True)
+# @permission_classes([IsAuthenticated])
+class ProductView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+    pagination_class = ProductsPageView
 
-        return Response(serializer.data)
+    def get_queryset(self):
+        path_id = self.kwargs['id']
+        return Product.objects.filter(category__id=path_id)
+
+
+class ProductCategoryView(generics.ListAPIView):
+    queryset = ProductCategory.objects.all().order_by('category_id')
+    serializer_class = ProductCategorySerializer
