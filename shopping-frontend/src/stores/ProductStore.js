@@ -9,8 +9,8 @@ export const useProductStore = defineStore('ProductStore', () => {
     let loadedData = ref(false)
     let next = ref(null)
     let previous = ref(null)
-    let numberOfPages = ref(0)
-   
+    let numberOfPages = ref(null)
+
 
     function loadCategoryItems() {
         API.get('products/').then((response) => {
@@ -22,15 +22,14 @@ export const useProductStore = defineStore('ProductStore', () => {
     }
 
     function loadProducts(id) {
-        console.log(localStorage.getItem('pages'))
         const page_number = localStorage.getItem('page_number')
         const pages = localStorage.getItem('pages')
-        API.get('products/category/'+id+'/?page='+page_number).then((response) => {
+        API.get('products/category/' + id + '/?page=' + page_number).then((response) => {
             products.value = response.data.results
             previous.value = response.data.previous
             next.value = response.data.next
-            numberOfPages.value = Math.ceil((response.data.count)/response.data.results.length)
-            if(pages == null || pages == 0) localStorage.setItem('pages', numberOfPages.value)
+            numberOfPages.value = Math.ceil((response.data.count) / response.data.results.length)
+            if (pages === null) localStorage.setItem('pages', numberOfPages.value)
             loadedData.value = true
         }).catch((error) => {
             console.log('Could not fetch data from the database')
@@ -40,4 +39,4 @@ export const useProductStore = defineStore('ProductStore', () => {
     return { categoryItem, loadCategoryItems, loadedData, products, loadProducts, previous, next, numberOfPages }
 })
 
-if(import.meta.hot) import.meta.hot.accept(acceptHMRUpdate(useProductStore, import.meta.hot))
+if (import.meta.hot) import.meta.hot.accept(acceptHMRUpdate(useProductStore, import.meta.hot))

@@ -9,8 +9,8 @@
                 </div>
                 <div class="flex w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 flex-wrap font-semibold justify-center mt-20">
                     <div class="w-full flex justify-around lg:justify-between">
-                        <button class="bg-emerald-300 text-black text-xl mr-4 px-3 py-2 rounded">Shop now</button>
-                        <button class="border-emerald-300 border-[3px] text-xl px-3 py-2 rounded text-white">View Cart</button>
+                        <button class="bg-emerald-300 text-black text-xl mr-4 px-3 py-2 rounded hover:bg-inherit hover:text-white hover:border-emerald-300 hover:border-[3px]">Shop now</button>
+                        <button class="border-emerald-300 border-[3px] text-xl px-3 py-2 rounded text-white hover:bg-emerald-300 hover:text-black">View Cart</button>
                     </div>
                 </div>
             </div>

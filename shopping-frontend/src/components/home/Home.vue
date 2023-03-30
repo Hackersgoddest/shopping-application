@@ -9,8 +9,15 @@ import Footer from "./views/Footer.vue";
 import Delivery from "./views/Delivery.vue"
 import Account from "./views/Account.vue"
 import { useUserStore } from "../../stores/UserStore";
+import { onMounted } from "vue";
 
 const userStore = useUserStore()
+onMounted(() => {
+  localStorage.removeItem('pages')
+  localStorage.removeItem('id')
+  localStorage.removeItem('page_number')
+  localStorage.removeItem('category_name')
+})
 
 </script>
 

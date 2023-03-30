@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, acceptHMRUpdate } from "pinia";
 import { ref, reactive } from "vue";
 import API from "../plugin/api";
 
@@ -119,7 +119,7 @@ export const useUserStore = defineStore('UserStore', () => {
       user.email = "";
       user.username = "";
       user.id = "";
-      localStorage.setItem('token', '')
+      localStorage.clear()
     }).catch((error) => {
       console.log(error)
     })
@@ -127,3 +127,4 @@ export const useUserStore = defineStore('UserStore', () => {
 
   return { openLogin, isLogin, user, login, signUp, errorMessage, unableToLogin, logInUser, logout }
 })
+if(import.meta.hot) import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))

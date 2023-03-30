@@ -12,10 +12,12 @@ onMounted(() => {
   if(token) userStore.logInUser()
   productStore.loadCategoryItems()
   const id = localStorage.getItem('id')
-  if(id !== undefined) {
+  if(id !== null) {
     productStore.loadProducts(parseInt(id))
+    // localStorage.setItem('pages', productStore.numberOfPages)
   }
 })
+
 
 </script>
 

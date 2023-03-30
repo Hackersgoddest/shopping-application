@@ -5,32 +5,35 @@ import {
     CartSharp as CartIcon,
     CartOutline as Cart,
 } from "@vicons/ionicons5";
+
+const productStore = useProductStore()
 let count = ref(0)
 let items = ref(0)
 let page = ref(0)
-const productStore = useProductStore()
-const numOfPages = ref(localStorage.getItem('pages'))
 const category_name = ref(localStorage.getItem('category_name'))
 const pages = ref([])
-for (let i = numOfPages.value; i > 0; i--) pages.value.push({ count: ++count.value, isActive: localStorage.getItem('page_number') == count.value ? true : false })
+const numOfPages = localStorage.getItem('pages')
+
+
+for (let i = numOfPages; i > 0; i--) pages.value.push({ count: ++count.value, isActive: localStorage.getItem('page_number') == count.value ? true : false })
 
 function navigatePage(sign) {
     if (sign == '-' && page.value > 0) --(page.value)
-    else if (sign == '+' && page.value < (numOfPages.value - 1)) ++(page.value)
+    else if (sign == '+' && page.value < (numOfPages - 1)) ++(page.value)
     for (let item of pages.value) {
         if (pages.value[page.value].count == item.count) item.isActive = true
         else item.isActive = false
     }
     const page_number = localStorage.getItem('page_number')
     if (sign == '-' && page_number > 1) localStorage.setItem('page_number', (parseInt(page_number) - 1))
-    else if (sign == '+' && page_number < numOfPages.value) localStorage.setItem('page_number', (parseInt(page_number) + 1))
+    else if (sign == '+' && page_number < numOfPages) localStorage.setItem('page_number', (parseInt(page_number) + 1))
     const id = localStorage.getItem('id')
     productStore.loadProducts(parseInt(id))
 }
 
 function goToPage(number) {
     for (let item of pages.value) {
-        if (pages.value[number-1].count == item.count) item.isActive = true
+        if (pages.value[number - 1].count == item.count) item.isActive = true
         else item.isActive = false
     }
     localStorage.setItem('page_number', number)
@@ -99,19 +102,22 @@ function goToPage(number) {
                 </figure>
             </div>
         </div>
-        <div class="flex justify-end mr-10" v-if="numOfPages">
-            <div :class="[(productStore.previous !== null) ? 'bg-blue-500 text-white cursor-pointer' : 'bg-gray-300 text-black cursor-not-allowed']"
-                class="flex font-semibold items-center px-2 rounded-sm" @click="navigatePage('-')">Prev</div>
+        <div class="flex justify-end mr-10">
+            <div :class="[(productStore.previous !== null) ? 'bg-blue-500 text-white cursor-pointer hover:bg-blue-700' : 'bg-gray-300 text-black cursor-not-allowed']"
+                class="flex font-semibold items-center px-2 rounded-sm" @click="navigatePage('-')">Prev
+            </div>
             <div class="flex border-2 border-solid border-gray-300">
                 <div class="flex max-w-[200px] sm:max-w-[400px] overflow-auto">
                     <template v-for="counter of pages">
-                        <div @click="goToPage(counter.count)" class="border-r-2 border-solid border-r-gray-300 px-4 py-[6px] font-semibold cursor-pointer"
+                        <div @click="goToPage(counter.count)"
+                            class="border-r-2 border-solid border-r-gray-300 px-4 py-[6px] font-semibold cursor-pointer"
                             :class="[counter.isActive ? 'bg-emerald-500 text-white' : 'bg-white']">{{ counter.count }}</div>
                     </template>
                 </div>
             </div>
-            <div :class="[(productStore.next !== null) ? 'bg-blue-500 text-white cursor-pointer' : 'bg-gray-300 text-black cursor-not-allowed']"
-                class="flex font-semibold items-center px-2 rounded-sm" @click="navigatePage('+')">Next</div>
+            <div :class="[(productStore.next !== null) ? 'bg-blue-500 text-white cursor-pointer hover:bg-blue-700' : 'bg-gray-300 text-black cursor-not-allowed']"
+                class="flex font-semibold items-center px-2 rounded-sm" @click="navigatePage('+')">Next
+            </div>
         </div>
     </div>
 </template>
